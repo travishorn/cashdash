@@ -277,10 +277,11 @@ ORDER BY        DETransaction.account1,
 
 ## To Do
 
-- User-facing interface for entering data
-- User-facing interface for viewing reports
+- Error-handling of forms
+- Editing/deleting rows
+- Make UI prettier
+- Reporting views
 - Import from CSV system
-- Unit tests
 
 ## License
 

@@ -1,3 +1,4 @@
+import { redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/database.js';
 
 /** @type {import('./$types').PageServerLoad} */
@@ -6,21 +7,18 @@ export async function load() {
 WITH RECURSIVE AccountHierarchy AS (
 	SELECT    id,
 						id hierarchy,
-						description,
 						0 depth
 	FROM      Account
 	WHERE     parentAccountId IS NULL
 	UNION ALL
 	SELECT    a.id,
 						h.id || '|' || a.id hierarchy,
-						a.description,
 						h.depth + 1
 	FROM      Account a
 	JOIN      AccountHierarchy h
 	ON        a.parentAccountId = h.id
 )
 SELECT    id,
-					description,
 					depth
 FROM      AccountHierarchy
 ORDER BY  hierarchy	
@@ -30,3 +28,21 @@ ORDER BY  hierarchy
 		accounts
 	};
 }
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+	default: async ({ request }) => {
+		const data = await request.formData();
+		const id = data.get('id');
+		const parentAccountId = data.get('parentAccountId');
+		const description = data.get('description');
+
+		await db('Account').insert({
+			id,
+			parentAccountId,
+			description
+		});
+
+		redirect(303, '/accounts');
+	}
+};
