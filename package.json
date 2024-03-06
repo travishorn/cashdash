@@ -1,0 +1,24 @@
+{
+  "name": "cashdash",
+  "version": "0.1.0",
+  "description": "A personal finance bookkeeping tool.",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier . --write",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run"
+  },
+  "keywords": [],
+  "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "better-sqlite3": "^9.4.3",
+    "knex": "^3.1.0"
+  },
+  "devDependencies": {
+    "prettier": "3.2.5"
+  }
+}
