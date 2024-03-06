@@ -1,2 +1,11 @@
-node_modules
+!.env.example
+.DS_Store
+.env
+.env.*
 *.sqlite3
+/.svelte-kit
+/build
+/package
+node_modules
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
