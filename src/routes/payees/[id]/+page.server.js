@@ -3,12 +3,8 @@ import { db } from '$lib/server/database.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-	const payee = (
-		await db('Payee').select(['id', 'description']).where({ id: params.id }).limit(1)
-	)[0];
-
 	return {
-		payee
+		payee: (await db('Payee').select(['id', 'description']).where({ id: params.id }).limit(1))[0]
 	};
 }
 
