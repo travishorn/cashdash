@@ -278,7 +278,7 @@ ORDER BY        DETransaction.account1,
 ## To Do
 
 - Error-handling of forms
-- Editing/deleting rows
+- Confirmation/undo form actions
 - Make UI prettier
 - Reporting views
 - Import from CSV system

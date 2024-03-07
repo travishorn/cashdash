@@ -6,7 +6,7 @@ export const up = (knex) => {
 	return knex.schema
 		.createTable('Account', (table) => {
 			table.string('id', 100).primary();
-			table.string('parentAccountId', 100).references('id').inTable('Account');
+			table.string('parentAccountId', 100).references('id').inTable('Account').onUpdate('CASCADE');
 			table.text('description');
 		})
 		.createTable('Commodity', (table) => {
@@ -24,11 +24,36 @@ export const up = (knex) => {
 		})
 		.createTable('Transaction', (table) => {
 			table.uuid('id').primary();
-			table.string('statusId', 7).notNullable().references('id').inTable('Status');
-			table.string('payeeId', 100).notNullable().references('id').inTable('Payee');
-			table.string('fromAccountId', 100).notNullable().references('id').inTable('Account');
-			table.string('toAccountId', 100).notNullable().references('id').inTable('Account');
-			table.string('commodityId', 5).notNullable().references('id').inTable('Commodity');
+			table
+				.string('statusId', 7)
+				.notNullable()
+				.references('id')
+				.inTable('Status')
+				.onUpdate('CASCADE');
+			table
+				.string('payeeId', 100)
+				.notNullable()
+				.references('id')
+				.inTable('Payee')
+				.onUpdate('CASCADE');
+			table
+				.string('fromAccountId', 100)
+				.notNullable()
+				.references('id')
+				.inTable('Account')
+				.onUpdate('CASCADE');
+			table
+				.string('toAccountId', 100)
+				.notNullable()
+				.references('id')
+				.inTable('Account')
+				.onUpdate('CASCADE');
+			table
+				.string('commodityId', 5)
+				.notNullable()
+				.references('id')
+				.inTable('Commodity')
+				.onUpdate('CASCADE');
 			table.date('date').notNullable();
 			table.integer('amount').notNullable();
 			table.text('description');

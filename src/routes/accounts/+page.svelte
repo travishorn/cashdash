@@ -19,7 +19,15 @@
 	<tbody>
 		{#each data.accounts as account}
 			<tr>
-				<td>{@html indentation(account.depth || 0)}{account.id}</td>
+				{#if account.depth === 0 || account.id === 'Opening Balances'}
+					<td>{@html indentation(account.depth || 0)}{account.id}</td>
+				{:else}
+					<td
+						>{@html indentation(account.depth || 0)}<a href={`/accounts/${account.id}`}
+							>{account.id}</a
+						></td
+					>
+				{/if}
 				<td>{account.description || ''}</td>
 			</tr>
 		{/each}

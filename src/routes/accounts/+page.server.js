@@ -12,7 +12,7 @@ WITH RECURSIVE AccountHierarchy AS (
 	WHERE     parentAccountId IS NULL
 	UNION ALL
 	SELECT    a.id,
-						h.id || '|' || a.id hierarchy,
+						h.hierarchy || '|' || a.id hierarchy,
 						a.description,
 						h.depth + 1
 	FROM      Account a

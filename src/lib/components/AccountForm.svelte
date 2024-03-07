@@ -3,27 +3,43 @@
 
 	/** @type {App.Account[]}*/
 	export let accounts;
+
+	/** @type {App.Account}*/
+	export let account;
+
+	const action = account ? '?/update' : '?/insert';
 </script>
 
-<form method="post">
+<form method="post" {action}>
 	<div>
 		<label for="parentAccountId">Parent account</label>
-		<select id="parentAccountId" name="parentAccountId">
-			<option value="" style="font-style:italic">None (top-level)</option>
-			{#each accounts as account}
-				<option value={account.id}>{@html indentation(account.depth || 0)}{account.id}</option>
+		<select id="parentAccountId" name="parentAccountId" required>
+			{#each accounts as parentAccount}
+				{#if !account || parentAccount.id !== account.id}
+					<option
+						value={parentAccount.id}
+						selected={parentAccount.id === account?.parentAccountId || null}
+						>{@html indentation(parentAccount.depth || 0)}{parentAccount.id}</option
+					>
+				{/if}
 			{/each}
 		</select>
 	</div>
 
 	<div>
 		<label for="id">Name</label>
-		<input id="id" name="id" type="text" maxlength="100" required />
+		<input id="id" name="id" type="text" maxlength="100" required value={account?.id || ''} />
 	</div>
 
 	<div>
 		<label for="description">Description</label>
-		<input id="description" name="description" type="text" maxlength="255" />
+		<input
+			id="description"
+			name="description"
+			type="text"
+			maxlength="255"
+			value={account?.description || ''}
+		/>
 	</div>
 
 	<button>Save</button>

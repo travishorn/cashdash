@@ -10,8 +10,9 @@ declare global {
 
 		interface Account {
 			id: string;
-			depth: number?;
-			description: string?;
+			parentAccountId?: string;
+			description?: string;
+			depth?: number;
 		}
 	}
 }
