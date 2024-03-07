@@ -51,12 +51,21 @@ npm run seed
 **Warning:** this also resets the database. If you have entered any data
 previously, it will be deleted when you run that command.
 
+## Usage
+
+Start the web server.
+
+```sh
+npm run dev
+```
+
+Now go to http://localhost:5173 to see the web UI.
+
 ## Data Entry
 
-This project is in very early development. All that exists right now is the
-database schema and built-in data. The only way to use it is with a SQLite
-library or some external database management software that can interface with
-SQLite.
+This project is in very early development. There is a rudimentary web UI but
+mainly you will have to use this project with a SQLite library or some external
+database management software that can interface with SQLite.
 
 ### Defining accounts
 
@@ -280,7 +289,6 @@ ORDER BY        DETransaction.account1,
 - Add/edit/delete transactions
 - Error-handling of forms
 - Confirmation/undo form actions
-- Make UI prettier
 - Reporting views
 - Import from CSV system
 
