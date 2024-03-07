@@ -20,6 +20,11 @@ declare global {
 			decimalFactor: number;
 			description?: string;
 		}
+
+		interface Payee {
+			id: string;
+			description?: string;
+		}
 	}
 }
 
