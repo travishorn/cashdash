@@ -1,4 +1,6 @@
 <script>
+	import { indentation } from '$lib';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
 </script>
@@ -17,8 +19,8 @@
 	<tbody>
 		{#each data.accounts as account}
 			<tr>
-				<td style={`padding-left:${account.depth * 20}px`}>{account.id}</td>
-				<td>{account.description}</td>
+				<td>{@html indentation(account.depth || 0)}{account.id}</td>
+				<td>{account.description || ''}</td>
 			</tr>
 		{/each}
 	</tbody>

@@ -34,8 +34,8 @@ export const actions = {
 	default: async ({ request }) => {
 		const data = await request.formData();
 		const id = data.get('id');
-		const parentAccountId = data.get('parentAccountId');
-		const description = data.get('description');
+		const parentAccountId = data.get('parentAccountId') || null;
+		const description = data.get('description') || null;
 
 		await db('Account').insert({
 			id,

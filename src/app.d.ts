@@ -7,6 +7,12 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+
+		interface Account {
+			id: string;
+			depth: number?;
+			description: string?;
+		}
 	}
 }
 
