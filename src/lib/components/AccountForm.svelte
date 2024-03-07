@@ -15,13 +15,11 @@
 		<label for="parentAccountId">Parent account</label>
 		<select id="parentAccountId" name="parentAccountId" required>
 			{#each accounts as parentAccount}
-				{#if !account || parentAccount.id !== account.id}
-					<option
-						value={parentAccount.id}
-						selected={parentAccount.id === account?.parentAccountId || null}
-						>{@html indentation(parentAccount.depth || 0)}{parentAccount.id}</option
-					>
-				{/if}
+				<option
+					value={parentAccount.id}
+					selected={parentAccount.id === account?.parentAccountId || null}
+					>{@html indentation(parentAccount.depth || 0)}{parentAccount.id}</option
+				>
 			{/each}
 		</select>
 	</div>

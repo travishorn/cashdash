@@ -13,6 +13,7 @@ declare global {
 			parentAccountId?: string;
 			description?: string;
 			depth?: number;
+			path?: string;
 		}
 
 		interface Commodity {

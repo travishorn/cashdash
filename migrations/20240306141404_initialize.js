@@ -57,7 +57,33 @@ export const up = (knex) => {
 			table.date('date').notNullable();
 			table.integer('amount').notNullable();
 			table.text('description');
-		});
+		}).raw(`
+CREATE VIEW AccountHierarchy AS
+WITH RECURSIVE AccountHierarchy AS (
+	SELECT    id,
+						parentAccountId,
+						description,
+						0 depth,
+						id path
+	FROM      Account
+	WHERE     parentAccountId IS NULL
+	UNION ALL
+	SELECT    a.id,
+						a.parentAccountId,
+						a.description,
+						h.depth + 1,
+						h.path || ':' || a.id path
+	FROM      Account a
+	JOIN      AccountHierarchy h
+	ON        a.parentAccountId = h.id
+)
+SELECT    id,
+					parentAccountId,
+					description,
+					depth,
+					path
+FROM      AccountHierarchy;		
+`);
 };
 
 /**
@@ -66,6 +92,7 @@ export const up = (knex) => {
  */
 export const down = (knex) => {
 	return knex.schema
+		.raw('DROP VIEW AccountHierarchy;')
 		.dropTable('Transaction')
 		.dropTable('Payee')
 		.dropTable('Status')
