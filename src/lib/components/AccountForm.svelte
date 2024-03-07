@@ -4,8 +4,8 @@
 	/** @type {App.Account[]}*/
 	export let accounts;
 
-	/** @type {App.Account}*/
-	export let account;
+	/** @type {App.Account|null}*/
+	export let account = null;
 
 	const action = account ? '?/update' : '?/insert';
 </script>

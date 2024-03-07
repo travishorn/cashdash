@@ -14,6 +14,12 @@ declare global {
 			description?: string;
 			depth?: number;
 		}
+
+		interface Commodity {
+			id: string;
+			decimalFactor: number;
+			description?: string;
+		}
 	}
 }
 
