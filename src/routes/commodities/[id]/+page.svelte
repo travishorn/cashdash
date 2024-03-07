@@ -1,14 +1,15 @@
 <script>
 	import CommodityForm from '$lib/components/CommodityForm.svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 </script>
 
-<h2>Edit commodity</h2>
-
 <CommodityForm commodity={data.commodity} />
 
+<hr class="mt-56 mb-5 border border-zinc-800" />
+
 <form method="post" action="?/delete">
-	<button>Delete commodity</button>
+	<Button type="danger">Delete commodity</Button>
 </form>

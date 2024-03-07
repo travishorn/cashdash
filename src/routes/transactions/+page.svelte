@@ -1,4 +1,11 @@
 <script>
+	import ActionBar from '$lib/components/ActionBar.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Table from '$lib/components/Table.svelte';
+	import TableHeader from '$lib/components/TableHeader.svelte';
+	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
+	import TableDataCell from '$lib/components/TableDataCell.svelte';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
 
@@ -17,33 +24,33 @@
 	});
 </script>
 
-<h2>Transactions</h2>
+<ActionBar>
+	<Button href="/transactions/new">Add new transaction</Button>
+</ActionBar>
 
-<a href="/transactions/new">Add new transaction</a>
-
-<table>
+<Table>
 	<thead>
 		<tr>
-			<th>Date</th>
-			<th>Status</th>
-			<th>Payee</th>
-			<th>Description</th>
-			<th>From</th>
-			<th>To</th>
-			<th>Amount</th>
+			<TableHeader>Date</TableHeader>
+			<TableHeader>Status</TableHeader>
+			<TableHeader>Payee</TableHeader>
+			<TableHeader>Description</TableHeader>
+			<TableHeader>From</TableHeader>
+			<TableHeader>To</TableHeader>
+			<TableHeader align="right">Amount</TableHeader>
 		</tr>
 	</thead>
 	<tbody>
-		{#each transactions as transaction}
-			<tr>
-				<td>{transaction.date}</td>
-				<td>{transaction.statusId}</td>
-				<td>{transaction.payeeId}</td>
-				<td>{transaction.description || ''}</td>
-				<td>{transaction.fromAccountId}</td>
-				<td>{transaction.toAccountId}</td>
-				<td>{transaction.amount}</td>
-			</tr>
+		{#each transactions as transaction, i}
+			<TableBodyRow {i}>
+				<TableDataCell>{transaction.date}</TableDataCell>
+				<TableDataCell>{transaction.statusId}</TableDataCell>
+				<TableDataCell>{transaction.payeeId}</TableDataCell>
+				<TableDataCell muted>{transaction.description || ''}</TableDataCell>
+				<TableDataCell>{transaction.fromAccountId}</TableDataCell>
+				<TableDataCell>{transaction.toAccountId}</TableDataCell>
+				<TableDataCell numeric>{transaction.amount}</TableDataCell>
+			</TableBodyRow>
 		{/each}
 	</tbody>
-</table>
+</Table>

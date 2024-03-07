@@ -1,35 +1,42 @@
 <script>
 	import { indentation } from '$lib';
+	import ActionBar from '$lib/components/ActionBar.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Table from '$lib/components/Table.svelte';
+	import TableHeader from '$lib/components/TableHeader.svelte';
+	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
+	import TableDataCell from '$lib/components/TableDataCell.svelte';
+	import Link from '$lib/components/Link.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 </script>
 
-<h2>Accounts</h2>
+<ActionBar>
+	<Button href="/accounts/new">Add new account</Button>
+</ActionBar>
 
-<a href="/accounts/new">Add new account</a>
-
-<table>
+<Table>
 	<thead>
 		<tr>
-			<th>Account</th>
-			<th>Description</th>
+			<TableHeader>Account</TableHeader>
+			<TableHeader>Description</TableHeader>
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.accounts as account}
-			<tr>
+		{#each data.accounts as account, i}
+			<TableBodyRow {i}>
 				{#if account.depth === 0 || account.id === 'Opening Balances'}
-					<td>{@html indentation(account.depth || 0)}{account.id}</td>
+					<TableDataCell>{@html indentation(account.depth || 0)}{account.id}</TableDataCell>
 				{:else}
-					<td
-						>{@html indentation(account.depth || 0)}<a href={`/accounts/${account.id}`}
-							>{account.id}</a
-						></td
+					<TableDataCell
+						>{@html indentation(account.depth || 0)}<Link href={`/accounts/${account.id}`}
+							>{account.id}</Link
+						></TableDataCell
 					>
 				{/if}
-				<td>{account.description || ''}</td>
-			</tr>
+				<TableDataCell muted>{account.description || ''}</TableDataCell>
+			</TableBodyRow>
 		{/each}
 	</tbody>
-</table>
+</Table>

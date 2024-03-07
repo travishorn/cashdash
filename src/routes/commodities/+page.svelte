@@ -1,27 +1,37 @@
 <script>
+	import ActionBar from '$lib/components/ActionBar.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Table from '$lib/components/Table.svelte';
+	import TableHeader from '$lib/components/TableHeader.svelte';
+	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
+	import TableDataCell from '$lib/components/TableDataCell.svelte';
+	import Link from '$lib/components/Link.svelte';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
 </script>
 
-<h2>Commodities</h2>
+<ActionBar>
+	<Button href="/commodities/new">Add new commodity</Button>
+</ActionBar>
 
-<a href="/commodities/new">Add new commodity</a>
-
-<table>
+<Table>
 	<thead>
 		<tr>
-			<th>Commodity</th>
-			<th>Decimal Factor</th>
-			<th>Description</th>
+			<TableHeader>Commodity</TableHeader>
+			<TableHeader align="right">Decimal Factor</TableHeader>
+			<TableHeader>Description</TableHeader>
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.commodities as commodity}
-			<tr>
-				<td><a href={`/commodities/${commodity.id}`}>{commodity.id}</a></td>
-				<td>{commodity.decimalFactor}</td>
-				<td>{commodity.description || ''}</td>
-			</tr>
+		{#each data.commodities as commodity, i}
+			<TableBodyRow {i}>
+				<TableDataCell
+					><Link href={`/commodities/${commodity.id}`}>{commodity.id}</Link></TableDataCell
+				>
+				<TableDataCell numeric>{commodity.decimalFactor}</TableDataCell>
+				<TableDataCell muted>{commodity.description || ''}</TableDataCell>
+			</TableBodyRow>
 		{/each}
 	</tbody>
-</table>
+</Table>

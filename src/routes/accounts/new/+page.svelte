@@ -5,6 +5,4 @@
 	export let data;
 </script>
 
-<h2>Add new account</h2>
-
 <AccountForm accounts={data.accounts} />

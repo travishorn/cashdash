@@ -1,27 +1,34 @@
 <script>
+	import Button from './Button.svelte';
+	import Form from './Form.svelte';
+	import FormGroup from './FormGroup.svelte';
+	import Input from './Input.svelte';
+
 	/** @type {App.Payee|null}*/
 	export let payee = null;
 
 	const action = payee ? '?/update' : '?/insert';
 </script>
 
-<form method="post" {action}>
-	<div>
+<Form method="post" {action}>
+	<FormGroup>
 		<label for="id">Name</label>
-		<input id="id" name="id" type="text" maxlength="100" required value={payee?.id || ''} />
-	</div>
+		<Input id="id" name="id" type="text" maxlength="100" required value={payee?.id || ''} />
+	</FormGroup>
 
-	<div>
+	<FormGroup>
 		<label for="description">Description</label>
-		<input
+		<Input
 			id="description"
 			name="description"
 			type="text"
 			maxlength="255"
 			value={payee?.description || ''}
 		/>
-	</div>
+	</FormGroup>
 
-	<button>Save</button>
-	<a href="/payees">Cancel</a>
-</form>
+	<div>
+		<Button>Save</Button>
+		<Button type="secondary" href="/payees">Cancel</Button>
+	</div>
+</Form>

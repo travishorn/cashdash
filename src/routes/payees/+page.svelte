@@ -1,29 +1,37 @@
 <script>
+	import ActionBar from '$lib/components/ActionBar.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import Table from '$lib/components/Table.svelte';
+	import TableHeader from '$lib/components/TableHeader.svelte';
+	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
+	import TableDataCell from '$lib/components/TableDataCell.svelte';
+	import Link from '$lib/components/Link.svelte';
+
 	/** @type {import('./$types').PageData} */
 	export let data;
 </script>
 
-<h2>Payees</h2>
+<ActionBar>
+	<Button href="/payees/new">Add new payee</Button>
+</ActionBar>
 
-<a href="/payees/new">Add new payee</a>
-
-<table>
+<Table>
 	<thead>
 		<tr>
-			<th>Payee</th>
-			<th>Description</th>
+			<TableHeader>Payee</TableHeader>
+			<TableHeader>Description</TableHeader>
 		</tr>
 	</thead>
 	<tbody>
-		{#each data.payees as payee}
-			<tr>
+		{#each data.payees as payee, i}
+			<TableBodyRow {i}>
 				{#if payee.id === 'Opening Balances'}
-					<td>{payee.id}</td>
+					<TableDataCell>{payee.id}</TableDataCell>
 				{:else}
-					<td><a href={`/payees/${payee.id}`}>{payee.id}</a></td>
+					<TableDataCell><Link href={`/payees/${payee.id}`}>{payee.id}</Link></TableDataCell>
 				{/if}
-				<td>{payee.description || ''}</td>
-			</tr>
+				<TableDataCell muted>{payee.description || ''}</TableDataCell>
+			</TableBodyRow>
 		{/each}
 	</tbody>
-</table>
+</Table>

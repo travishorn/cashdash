@@ -1,19 +1,24 @@
 <script>
+	import Button from './Button.svelte';
+	import Form from './Form.svelte';
+	import FormGroup from './FormGroup.svelte';
+	import Input from './Input.svelte';
+
 	/** @type {App.Commodity|null}*/
 	export let commodity = null;
 
 	const action = commodity ? '?/update' : '?/insert';
 </script>
 
-<form method="post" {action}>
-	<div>
+<Form method="post" {action}>
+	<FormGroup>
 		<label for="id">Name</label>
-		<input id="id" name="id" type="text" maxlength="5" required value={commodity?.id || ''} />
-	</div>
+		<Input id="id" name="id" type="text" maxlength="5" required value={commodity?.id || ''} />
+	</FormGroup>
 
-	<div>
+	<FormGroup>
 		<label for="decimalFactor">Decimal factor</label>
-		<input
+		<Input
 			id="decimalFactor"
 			name="decimalFactor"
 			type="number"
@@ -21,19 +26,21 @@
 			required
 			value={commodity?.decimalFactor || 100}
 		/>
-	</div>
+	</FormGroup>
 
-	<div>
+	<FormGroup>
 		<label for="description">Description</label>
-		<input
+		<Input
 			id="description"
 			name="description"
 			type="text"
 			maxlength="255"
 			value={commodity?.description || ''}
 		/>
-	</div>
+	</FormGroup>
 
-	<button>Save</button>
-	<a href="/commodities">Cancel</a>
-</form>
+	<div>
+		<Button>{commodity ? 'Update commodity' : 'Create commodity'}</Button>
+		<Button type="secondary" href="/commodities">Cancel</Button>
+	</div>
+</Form>

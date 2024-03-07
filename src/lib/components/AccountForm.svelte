@@ -1,5 +1,10 @@
 <script>
 	import { indentation } from '$lib';
+	import Button from './Button.svelte';
+	import Form from './Form.svelte';
+	import FormGroup from './FormGroup.svelte';
+	import Input from './Input.svelte';
+	import Select from './Select.svelte';
 
 	/** @type {App.Account[]}*/
 	export let accounts;
@@ -10,10 +15,10 @@
 	const action = account ? '?/update' : '?/insert';
 </script>
 
-<form method="post" {action}>
-	<div>
+<Form method="post" {action}>
+	<FormGroup>
 		<label for="parentAccountId">Parent account</label>
-		<select id="parentAccountId" name="parentAccountId" required>
+		<Select id="parentAccountId" name="parentAccountId" required>
 			{#each accounts as parentAccount}
 				<option
 					value={parentAccount.id}
@@ -21,25 +26,27 @@
 					>{@html indentation(parentAccount.depth || 0)}{parentAccount.id}</option
 				>
 			{/each}
-		</select>
-	</div>
+		</Select>
+	</FormGroup>
 
-	<div>
+	<FormGroup>
 		<label for="id">Name</label>
-		<input id="id" name="id" type="text" maxlength="100" required value={account?.id || ''} />
-	</div>
+		<Input id="id" name="id" type="text" maxlength="100" required value={account?.id || ''} />
+	</FormGroup>
 
-	<div>
+	<FormGroup>
 		<label for="description">Description</label>
-		<input
+		<Input
 			id="description"
 			name="description"
 			type="text"
 			maxlength="255"
 			value={account?.description || ''}
 		/>
-	</div>
+	</FormGroup>
 
-	<button>Save</button>
-	<a href="/accounts">Cancel</a>
-</form>
+	<div>
+		<Button>{account ? 'Update account' : 'Create account'}</Button>
+		<Button type="secondary" href="/accounts">Cancel</Button>
+	</div>
+</Form>
