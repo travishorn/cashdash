@@ -6,6 +6,8 @@
 	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
 	import TableDataCell from '$lib/components/TableDataCell.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import CheckIcon from '$lib/components/CheckIcon.svelte';
+	import ClockIcon from '$lib/components/ClockIcon.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -33,7 +35,7 @@
 	<thead>
 		<tr>
 			<TableHeader>Date</TableHeader>
-			<TableHeader>Status</TableHeader>
+			<TableHeader></TableHeader>
 			<TableHeader>Payee</TableHeader>
 			<TableHeader>Description</TableHeader>
 			<TableHeader>From</TableHeader>
@@ -45,7 +47,17 @@
 		{#each transactions as transaction, i}
 			<TableBodyRow {i}>
 				<TableDataCell>{transaction.date}</TableDataCell>
-				<TableDataCell>{transaction.statusId}</TableDataCell>
+				{#if transaction.statusId === 'Cleared'}
+					<TableDataCell title="Cleared">
+						<CheckIcon />
+					</TableDataCell>
+				{:else}
+					<TableDataCell title="Pending">
+						<div class="text-zinc-200/20">
+							<ClockIcon />
+						</div>
+					</TableDataCell>
+				{/if}
 				<TableDataCell
 					><Link href={`/transactions/${transaction.id}`}>{transaction.payeeId}</Link
 					></TableDataCell

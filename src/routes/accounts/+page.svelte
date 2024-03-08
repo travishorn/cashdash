@@ -27,11 +27,14 @@
 		{#each data.accounts as account, i}
 			<TableBodyRow {i}>
 				{#if account.depth === 0 || account.id === 'Opening Balances'}
-					<TableDataCell>{@html indentation(account.depth || 0)}{account.id}</TableDataCell>
+					<TableDataCell
+						><span class="tracking-[0.25em]">{@html indentation(account.depth || 0)}</span
+						>{account.id}</TableDataCell
+					>
 				{:else}
 					<TableDataCell
-						>{@html indentation(account.depth || 0)}<Link href={`/accounts/${account.id}`}
-							>{account.id}</Link
+						><span class="tracking-[0.25em]">{@html indentation(account.depth || 0)}</span><Link
+							href={`/accounts/${account.id}`}>{account.id}</Link
 						></TableDataCell
 					>
 				{/if}

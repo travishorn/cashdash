@@ -32,7 +32,7 @@
 			name="date"
 			type="date"
 			required
-			value={transaction?.date || new Date().toISOString().slice(0, 10)}
+			value={transaction?.date.slice(0, 10) || new Date().toISOString().slice(0, 10)}
 		/>
 	</FormGroup>
 
