@@ -26,6 +26,23 @@ declare global {
 			id: string;
 			description?: string;
 		}
+
+		interface Status {
+			id: string;
+			description: string;
+		}
+
+		interface Transaction {
+			id: string;
+			statusId: string;
+			payeeId: string;
+			fromAccountId: string;
+			toAccountId: string;
+			commodityId: string;
+			date: date;
+			amount: number;
+			description?: string;
+		}
 	}
 }
 

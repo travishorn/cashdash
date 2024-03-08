@@ -12,13 +12,11 @@ export async function load({ params }) {
 export const actions = {
 	update: async ({ request, params }) => {
 		const data = await request.formData();
-		const id = data.get('id');
-		const description = data.get('description') || null;
 
 		await db('Payee')
 			.update({
-				id,
-				description
+				id: data.get('id'),
+				description: data.get('description') || null
 			})
 			.where({ id: params.id });
 

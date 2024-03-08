@@ -5,6 +5,7 @@
 	import TableHeader from '$lib/components/TableHeader.svelte';
 	import TableBodyRow from '$lib/components/TableBodyRow.svelte';
 	import TableDataCell from '$lib/components/TableDataCell.svelte';
+	import Link from '$lib/components/Link.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -45,7 +46,10 @@
 			<TableBodyRow {i}>
 				<TableDataCell>{transaction.date}</TableDataCell>
 				<TableDataCell>{transaction.statusId}</TableDataCell>
-				<TableDataCell>{transaction.payeeId}</TableDataCell>
+				<TableDataCell
+					><Link href={`/transactions/${transaction.id}`}>{transaction.payeeId}</Link
+					></TableDataCell
+				>
 				<TableDataCell muted>{transaction.description || ''}</TableDataCell>
 				<TableDataCell>{transaction.fromAccountId}</TableDataCell>
 				<TableDataCell>{transaction.toAccountId}</TableDataCell>

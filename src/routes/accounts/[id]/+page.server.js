@@ -22,15 +22,12 @@ export async function load({ params }) {
 export const actions = {
 	update: async ({ request, params }) => {
 		const data = await request.formData();
-		const id = data.get('id');
-		const parentAccountId = data.get('parentAccountId') || null;
-		const description = data.get('description') || null;
 
 		await db('Account')
 			.update({
-				id,
-				parentAccountId,
-				description
+				id: data.get('id'),
+				parentAccountId: data.get('parentAccountId') || null,
+				description: data.get('description') || null
 			})
 			.where({ id: params.id });
 

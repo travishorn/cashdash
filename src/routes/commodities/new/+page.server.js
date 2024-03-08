@@ -5,14 +5,11 @@ import { db } from '$lib/server/database.js';
 export const actions = {
 	insert: async ({ request }) => {
 		const data = await request.formData();
-		const id = data.get('id');
-		const decimalFactor = data.get('decimalFactor');
-		const description = data.get('description') || null;
 
 		await db('Commodity').insert({
-			id,
-			decimalFactor,
-			description
+			id: data.get('id'),
+			decimalFactor: data.get('decimalFactor'),
+			description: data.get('description') || null
 		});
 
 		redirect(303, '/commodities');

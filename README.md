@@ -286,7 +286,6 @@ ORDER BY        DETransaction.account1,
 
 ## To Do
 
-- Add/edit/delete transactions
 - Error-handling of forms
 - Confirmation/undo form actions
 - Reporting views

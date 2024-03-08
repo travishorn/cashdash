@@ -1,1 +1,1 @@
-<div class="flex flex-col"><slot /></div>
+<div class="flex flex-col grow"><slot /></div>

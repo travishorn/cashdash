@@ -5,6 +5,7 @@ export async function load() {
 	const transactions = await db('Transaction')
 		.join('Commodity', 'Commodity.id', '=', 'Transaction.commodityId')
 		.select([
+			'Transaction.id',
 			'Transaction.date',
 			'Transaction.statusId',
 			'Transaction.payeeId',

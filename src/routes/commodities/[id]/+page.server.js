@@ -17,15 +17,12 @@ export async function load({ params }) {
 export const actions = {
 	update: async ({ request, params }) => {
 		const data = await request.formData();
-		const id = data.get('id');
-		const decimalFactor = data.get('decimalFactor');
-		const description = data.get('description') || null;
 
 		await db('Commodity')
 			.update({
-				id,
-				decimalFactor,
-				description
+				id: data.get('id'),
+				decimalFactor: data.get('decimalFactor'),
+				description: data.get('description') || null
 			})
 			.where({ id: params.id });
 
