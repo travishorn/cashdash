@@ -1,9 +1,10 @@
 <script>
 	/** @type {string|null} */
 	export let href = null;
-
 	export let type = 'primary';
 	let colors = '';
+
+	const padding = href ? 'px-2 py-1.5' : 'px-2 py-1';
 
 	switch (type) {
 		case 'secondary':
@@ -16,7 +17,7 @@
 			colors = 'bg-lime-400 hover:bg-lime-300 text-zinc-900';
 	}
 
-	const className = `px-2 py-1 rounded shadow ${colors}`;
+	const className = `rounded shadow ${padding} ${colors}`;
 </script>
 
 {#if href}
