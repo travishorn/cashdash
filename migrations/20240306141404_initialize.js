@@ -64,25 +64,45 @@ WITH RECURSIVE AccountHierarchy AS (
 						parentAccountId,
 						description,
 						0 depth,
-						id path
+						id path,
+						id topLevelAccountId
 	FROM      Account
 	WHERE     parentAccountId IS NULL
 	UNION ALL
 	SELECT    a.id,
 						a.parentAccountId,
 						a.description,
-						h.depth + 1,
-						h.path || ':' || a.id path
+						ah.depth + 1,
+						ah.path || ':' || a.id path,
+						ah.topLevelAccountId
 	FROM      Account a
-	JOIN      AccountHierarchy h
-	ON        a.parentAccountId = h.id
+	JOIN      AccountHierarchy ah
+	ON        a.parentAccountId = ah.id
 )
 SELECT    id,
 					parentAccountId,
 					description,
 					depth,
-					path
-FROM      AccountHierarchy;		
+					path,
+					topLevelAccountId
+FROM      AccountHierarchy;
+`).raw(`
+CREATE VIEW TransactionDoubleEntry AS
+SELECT      Credit.toAccountId accountId,
+            DATE(Credit.date) date,
+            Credit.amount,
+            Credit.commodityId
+FROM        \`Transaction\` Credit
+JOIN        Commodity
+ON          Commodity.id = Credit.commodityId
+UNION ALL 
+SELECT      Debit.fromAccountId accountId,
+            DATE(Debit.date) date,
+            Debit.amount * -1 amount,
+            Debit.commodityId
+FROM        \`Transaction\` Debit
+JOIN        Commodity
+ON          Commodity.id = Debit.commodityId;
 `);
 };
 
@@ -92,7 +112,8 @@ FROM      AccountHierarchy;
  */
 export const down = (knex) => {
 	return knex.schema
-		.raw('DROP VIEW AccountHierarchy;')
+		.dropView('TransactionDoubleEntry')
+		.dropView('AccountHierarcy')
 		.dropTable('Transaction')
 		.dropTable('Payee')
 		.dropTable('Status')

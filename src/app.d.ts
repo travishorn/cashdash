@@ -43,6 +43,14 @@ declare global {
 			amount: number;
 			description?: string;
 		}
+
+		interface Balance {
+			topLevelAccountId: string;
+			accountId: string;
+			commodityId: string;
+			balance: number;
+			depth: number;
+		}
 	}
 }
 
