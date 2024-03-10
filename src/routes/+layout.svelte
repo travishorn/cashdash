@@ -11,7 +11,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-zinc-900 text-zinc-200">
-	<div class="container mx-auto pt-10 pb-64 flex flex-col gap-6">
+	<div class="container mx-auto pt-10 pb-64 flex flex-col gap-12">
 		<SiteHeader />
 		<main>
 			<slot />

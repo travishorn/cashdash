@@ -2,6 +2,12 @@
 
 A personal finance bookkeeping tool.
 
+![Balance report](./screenshots/balances.png)
+
+![Account listing](./screenshots/accounts.png)
+
+![Editing a transaction](./screenshots/edit-transaction.png)
+
 ## Installation
 
 You must have [git](https://git-scm.com/) and [Node.js](https://nodejs.org)
@@ -63,232 +69,123 @@ Now go to http://localhost:5173 to see the web UI.
 
 ## Data Entry
 
-This project is in very early development. There is a rudimentary web UI but
-mainly you will have to use this project with a SQLite library or some external
-database management software that can interface with SQLite.
+You can add, edit, and delete accounts, commodities, payees, and transactions
+using the navigation links at the top of the page.
 
-### Defining accounts
+### Accounts
 
 All transactions must have a "from" account and a "to" account to describe the
 movement of commodities. You must define any account you want to use first.
 These can be real accounts held with financial institutions or virtual accounts
-you use to categorize expenses.
+you use to categorize expenses, income, and more.
 
-```sql
-INSERT INTO Account (id, parentAccountId, description)
-VALUES ('Checking', 'Assets', 'My primary account for managing liquid funds and day-to-day financial transactions.')
-```
+Every account must have a **Parent account**.
 
-`id` can be anything you want and should concisely describe the account. For
-example, `Checking` for your primary checking account, `Groceries` for an
-expense account you would use any time you spend money on groceries, or `Car
-Loan` for a liability account where you owe borrowed money for your car.
+There are five built-in top-level accounts included by default. They include:
 
-`parentAccountId` is the `id` of a parent account to place this account under.
-For example, `Assets` for a `Checking` account, `Expenses` for a `Groceries`
-expense account, or `Liabilities` for a `Car Loan` liability account.
-
-Some built-in top-level accounts are included by default. You should assign one
-of these as a parent for each of your accounts. Built-in top-level accounts
-include:
-
-- `Assets`: Everything owned with financial value. This includes cash, savings,
-  investments, and physical possessions, contributing to overall financial
-  worth.
-- `Equity`: The residual value in the financial ledger, capturing the difference
-  between assets and liabilities.
-- `Expenses`: The costs incurred in daily life, such as bills, groceries, and
+- **Assets**: Everything owned with financial value. This includes cash,
+  savings, investments, and physical possessions, contributing to overall
+  financial worth.
+- **Equity**: The residual value in the financial ledger, capturing the
+  difference between assets and liabilities.
+- **Expenses**: The costs incurred in daily life, such as bills, groceries, and
   other necessary outlays.
-- `Income`: The money earned from various sources, like work, investments, or
+- **Income**: The money earned from various sources, like work, investments, or
   side hustles.
-- `Liabilities`: Financial obligations and debts. This includes loans, credit
+- **Liabilities**: Financial obligations and debts. This includes loans, credit
   card balances, and any amounts owed.
 
-`description` should be a good description to remind you what the account is and
-what it is used for.
+A built-in non-top-level account **Opening Balances** is included by default
+with **Equity** as its parent to facilitate starting the ledger.
 
-A built-in non-top-level account `Opening Balances` is included by default with
-`Equity` as its parent to facilitate starting the ledger.
+**Name** should be a very short identifier for this account. Account names must
+be unique across the entire ledger.
 
-### Defining commodities
+**Description** should be a good description to remind you what the account is
+and what it is used for.
+
+### Commodities
 
 Before you can enter any transactions, you will need to define any commodities
-you will be using. The United States dollar (USD) is included by default. For
-all other commodities, enter them in the `Commodity` table.
+you will be using. The United States dollar (USD) is included by default.
 
-```sql
-INSERT INTO Commodity (id, decimalFactor, description)
-VALUES ('CAD', 100, 'Canadian dollar')
-```
+**Name** is the name of the commodity. This is a very short (five characters or
+less) identifier for the commodity. Ideally, use the [ISO 4217
+code](https://en.wikipedia.org/wiki/ISO_4217) for the currency if one exists.
 
-`id` can be anything, but ideally an [ISO
-4217](https://en.wikipedia.org/wiki/ISO_4217) currency code would be used if
-available.
+**Decimal factor** describes an integer by which to divide the lowest
+denomination in order to get to the standard denomination. For example: the
+lowest denomination for USD is cents (pennies). The **decimal factor** is `100`
+for USD because you divide cents by 100 to get the standard denomination (the
+dollar).
 
-`decimalFactor` describes an integer by which to divide amounts in order to get
-the standard denomination. Amounts are stored in the lowest denomination (for
-example: cents for USD). The `decimalFactor` is `100` for USD because you divide
-the amount by 100 to get the standard denomination.
-
-`description` describes the commodity if you need to remember what it
+**Description** describes the commodity if you need to remember what it
 represents.
 
-### Defining payees
+### Payees
 
 Every transaction needs an associated payee. This could be the entity paying or
-being paid. For example, `ACME Corporation` could be a payee for your employer
-who will transfer money to you as a salary. `Walmart` could be a payee who you
-transfer money to when you purchase groceries.
+being paid.
 
-```sql
-INSERT INTO Payee (id, description)
-VALUES ('ACME Corporation', 'Dynamic and innovative multinational company.')
-```
+**Name** is a very short unique identifier for the payee. For example, **Allied
+Universal** could be a payee for your employer who will transfer money to you as
+a salary. **Walmart** could be a payee who you transfer money to when you
+purchase groceries.
 
-`id` is a unique, short name for the payee.
+**Description** should be a good description to remind you what the payee is.
 
-`description` should be a good description to remind you what the payee is.
-
-A built-in `Opening Balances` payee is included by default to facilitate
+A built-in **Opening Balances** payee is included by default to facilitate
 starting the ledger.
 
-### Entering transactions
+### Transactions
 
-```sql
-INSERT INTO Transaction (
-  id,
-  statusId,
-  payeeId,
-  fromAccountId,
-  toAccountId,
-  commodityId,
-  date,
-  amount,
-  description
-) VALUES (
-  '9b56f3ec-26ed-4601-a257-cc5002ca3607',
-  'Cleared',
-  'Walmart',
-  'Checking',
-  'Groceries',
-  'USD',
-  '2024-01-07',
-  18000,
-  'Groceries for the week'
-)
-```
+Every time money moves from one account to another (even if it's to a virtual
+"expense" account like **Groceries**), record it as a transaction.
 
-`id` is a unique identifier for the transaction. It can be anything. Ideally,
-this will be auto-generated in the future.
+**Date** is the date the transaction occurred.
 
-`statusId` must be either...
+**Status** must be either...
 
-- `Cleared`: Transaction has been successfully processed, and funds are securely
-  transferred. The financial operation is complete, and the transaction is
-  considered finalized.
-- `Pending`: Transaction is in progress or awaiting further processing. Funds
+- **Cleared**: Transaction has been successfully processed, and funds are
+  securely transferred. The financial operation is complete, and the transaction
+  is considered finalized.
+- **Pending**: Transaction is in progress or awaiting further processing. Funds
   may not have been transferred yet, and additional steps may be required before
   the transaction is considered complete.
 
-`payeeId` is the entity being payed or paying.
+**Payee** is the entity being payed or paying.
 
-`fromAccountId` indicates which account is being debited (money is coming from).
+**Description** is a good description of the transaction so you can remember why
+it occurred or what it involved later.
 
-`toAccountId` indicates which account is being credited (money is going to).
+**From** indicates which account is being debited (money is coming from).
 
-`commodityId` indicates the commodity being transferred.
+**To** indicates which account is being credited (money is going to).
 
-`date` is the date the transaction occurred.
-
-`amount` is the amount of the commodity that was transferred, in terms of the
+**Amount** is the amount of the commodity that was transferred, in terms of the
 lowest denomination (for example, cents for USD).
 
-`description` is a good description of the transaction so you can remember why
-it occurred or what it involved later.
+**Commodity** indicates the commodity being transferred.
 
 ## Reports
 
-### All transactions, double-entry style
+You can get a list of every account, commodity, payee, and transaction by using
+the navigation links at the top.
 
-Get a list of all transactions in double-entry style. Notice the amounts always
-balance out to zero.
+The homepage shows current account balances as tables and charts.
 
-```sql
-SELECT          Credit.toAccountId account1,
-                Credit.fromAccountId account2,
-                Credit.commodityId,
-                DATE(Credit.date) date,
-                Credit.amount / Commodity.decimalFactor amount
-FROM            `Transaction` Credit
-JOIN            Commodity
-ON              Commodity.id = Credit.commodityId
-UNION ALL
-SELECT          Debit.fromAccountId account1,
-                Debit.toAccountId account2,
-                Debit.commodityId,
-                DATE(Debit.date) date,
-                Debit.amount * -1 / Commodity.decimalFactor amount
-FROM            `Transaction` Debit
-JOIN            Commodity
-ON              Commodity.id = Debit.commodityId
-ORDER BY        date,
-                account1,
-                account2
-```
+Many interactive tables and charts are planned but do not exist at the moment.
 
-| account1         | account2         | commodityId | date       | amount |
-| ---------------- | ---------------- | ----------- | ---------- | -----: |
-| Checking         | Opening Balances | USD         | 2024-01-01 |  10000 |
-| Opening Balances | Checking         | USD         | 2024-01-01 | -10000 |
-| Checking         | Salary           | USD         | 2024-01-05 |   1200 |
-| Salary           | Checking         | USD         | 2024-01-05 |  -1200 |
-| Checking         | Groceries        | USD         | 2024-01-07 |   -180 |
-| Groceries        | Checking         | USD         | 2024-01-07 |    180 |
-
-### Current balances
-
-Get the current balance by account. Notice again the balances always balance out
-to zero.
-
-```sql
-SELECT          DETransaction.account1 account,
-                DETransaction.commodityId,
-                SUM(DETransaction.amount) / Commodity.decimalFactor balance
-FROM            (
-                  SELECT          Credit.toAccountId account1,
-                                  Credit.fromAccountId account2,
-                                  Credit.commodityId,
-                                  Credit.date,
-                                  Credit.amount
-                  FROM            `Transaction` Credit
-                  UNION ALL
-                  SELECT          Debit.fromAccountId account1,
-                                  Debit.toAccountId account2,
-                                  Debit.commodityId,
-                                  Debit.date,
-                                  Debit.amount * -1 amount
-                  FROM            `Transaction` Debit
-                ) DETransaction
-JOIN            Commodity
-ON              Commodity.id  = DETransaction.commodityId
-GROUP BY        DETransaction.account1,
-                DETransaction.commodityId
-ORDER BY        DETransaction.account1,
-                DETransaction.commodityId
-```
-
-| account          | commodityId | balance |
-| ---------------- | ----------- | ------: |
-| Checking         | USD         |   11020 |
-| Groceries        | USD         |     180 |
-| Opening Balances | USD         |  -10000 |
-| Salary           | USD         |   -1200 |
+Those with the skill may also generate reports by interacting with the SQLite
+database directly, which is generated in the root project directory as
+`development.sqlite3` or `production.sqlite3` depending on which environment you
+started the server in.
 
 ## To Do
 
 - Error-handling of forms
 - Confirmation/undo form actions
-- Reporting views
+- Many more reporting views with interactive elements
 - Import from CSV system
 
 ## License

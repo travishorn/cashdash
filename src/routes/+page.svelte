@@ -9,14 +9,14 @@
 </script>
 
 <div class="flex flex-col gap-32">
-	{#each Object.entries(data.balances) as [accountId, accounts]}
+	{#each Object.entries(data.balances) as [accountId, balance]}
 		<div>
 			<h3>{accountId}</h3>
 			<div class="flex gap-16">
 				<div class="w-1/3">
 					<Table>
 						<tbody>
-							{#each accounts as account, i}
+							{#each balance.accounts as account, i}
 								<TableBodyRow {i}>
 									<TableDataCell
 										>{@html indentation(account.depth || 0)}{account.accountId}</TableDataCell
@@ -34,7 +34,9 @@
 						</tbody>
 					</Table>
 				</div>
-				<div class="w-2/3">Charts coming soon.</div>
+				<div class="w-2/3">
+					{@html balance.plot}
+				</div>
 			</div>
 		</div>
 	{/each}
